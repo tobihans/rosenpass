@@ -11,5 +11,7 @@ clap = { version = "4.4.10", features = ["derive"] }
 env_logger = "0.10.1"
 log = "0.4.20"
 rosenpass = { version = "0.2.1", path = "../rosenpass" }
+rosenpass-cipher-traits = { version = "0.1.0", path = "../cipher-traits" }
+rosenpass-ciphers = { version = "0.1.0", path = "../ciphers" }
 rosenpass-sodium = { version = "0.1.0", path = "../sodium" }
 wireguard_rs = { git = "https://github.com/DefGuard/wireguard-rs", rev = "a281dca8b2cdbf90aeaa3c73f6a08ab58b9be2a0" }

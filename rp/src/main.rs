@@ -1,9 +1,9 @@
-use rosenpass::{
-    pqkem::{StaticKEM, KEM},
-    protocol::{SPk, SSk},
-};
+use rosenpass::protocol::{SPk, SSk};
+use rosenpass_cipher_traits::Kem;
+use rosenpass_ciphers::kem::StaticKem;
 use std::{
     fs::{self, OpenOptions},
+    io::Write,
     os::unix::fs::OpenOptionsExt,
 };
 use std::{path::PathBuf, process::Command};
@@ -56,20 +56,25 @@ impl Rp {
                         }
 
                         let wg_key = fs_options.open(private_keys_dir.join("wgsk"))?;
-                        fs_options.open(private_keys_dir.join("pqsk"))?;
+                        let mut pqsk = fs_options.open(private_keys_dir.join("pqsk"))?;
+                        let mut pqpk = fs_options.open(private_keys_dir.join("pqpk"))?;
                         let output = Command::new("wg")
                             .args(["genkey"])
                             .stdout(wg_key)
                             .output()?;
                         println!("{:?}", output);
 
-                        let mut ssk = SSk::random();
-
                         log::debug!("generating rosenpass public key");
+
+                        let mut ssk = SSk::random();
                         let mut spk = SPk::random();
-                        StaticKEM::keygen(ssk.secret_mut(), spk.secret_mut())?;
-                        // utils::write_to_file(dir.as_path().join("pqsk"), ssk.secret())?;
-                        // utils::write_to_file(dir.as_path().join("pqpk"), spk.secret())?;
+                        StaticKem::keygen(ssk.secret_mut(), spk.secret_mut())?;
+
+                        pqsk.write_all(ssk.secret())?;
+                        pqsk.flush()?;
+
+                        pqpk.write_all(spk.secret())?;
+                        pqpk.flush()?;
                     }
                     Ok(true) => bail!("PRIVATE_KEYS_DIR {:?} already exists", private_keys_dir),
                     Err(e) => bail!("Error checking for directory {:?}: {}", private_keys_dir, e),

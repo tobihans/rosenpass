@@ -1379,6 +1379,8 @@ dependencies = [
  "env_logger",
  "log",
  "rosenpass",
+ "rosenpass-cipher-traits",
+ "rosenpass-ciphers",
  "rosenpass-sodium",
  "wireguard_rs",
 ]
