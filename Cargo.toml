@@ -10,6 +10,7 @@ members = [
     "sodium",
     "oqs",
     "to",
+    "rp",
     "fuzz",
     "secret-memory",
     "lenses",
