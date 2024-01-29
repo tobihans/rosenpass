@@ -1,0 +1,12 @@
+[package]
+name = "rp"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rosenpass = { workspace = true }
+clap = { workspace = true }
+anyhow = { workspace = true }
+wireguard_rs = { git = "https://github.com/DefGuard/wireguard-rs" }

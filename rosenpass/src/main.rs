@@ -1,3 +1,4 @@
+use clap::Parser;
 use log::error;
 use rosenpass::cli::Cli;
 use std::process::exit;
@@ -7,7 +8,7 @@ pub fn main() {
     // default to displaying warning and error log messages only
     env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("warn")).init();
 
-    match Cli::run() {
+    match Cli::parse().run() {
         Ok(_) => {}
         Err(e) => {
             error!("{e}");
